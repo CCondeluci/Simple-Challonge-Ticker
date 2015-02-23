@@ -1,0 +1,36 @@
+from __future__ import print_function
+import challonge
+
+# Tell pychallonge about your [CHALLONGE! API credentials](http://api.challonge.com/v1).
+challonge.set_credentials("Beanwolf", "sXqIzciYnpJtBxep8vA42LI8FUSt5nCTmJaXl22s")
+
+# Retrieve a tournament by its id (or its url).
+tournament = challonge.tournaments.show("xzr2pwvh")
+
+# Tournaments, matches, and participants are all represented as normal Python dicts.
+print(tournament["id"]) # 3272
+print(tournament["name"]) # My Awesome Tournament
+print(tournament["started-at"]) # None
+
+# Retrieve the participants for a given tournament.
+participants = challonge.participants.index(tournament["id"])
+print(len(participants)) # 13
+
+matches = challonge.matches.index(tournament["id"], state="complete")
+
+numMatches = len(matches)
+
+print("Number of completed matches: ", numMatches)
+
+matchOne = matches[0]
+
+p1 = challonge.participants.show("xzr2pwvh", matchOne["player1-id"])["name"];
+p2 = challonge.participants.show("xzr2pwvh", matchOne["player2-id"])["name"]
+print(p1 + " vs. " + p2 + ", " + matchOne["scores-csv"])
+
+
+matchTwo = matches[1]
+
+p1 = challonge.participants.show("xzr2pwvh", matchTwo["player1-id"])["name"];
+p2 = challonge.participants.show("xzr2pwvh", matchTwo["player2-id"])["name"]
+print(p1 + " vs. " + p2 + ", " + matchTwo["scores-csv"])
